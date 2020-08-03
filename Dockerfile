@@ -1,12 +1,16 @@
-FROM centos
-RUN yum install sudo -y 
-RUN yum install java -y 
-RUN yum install git -y 
-RUN yum install openssh-server -y 
-RUN ssh-keygen -A 
-RUN /usr/sbin/sshd -D &
+ 
+
+FROM centos:latest
+
+RUN yum install sudo -y
+RUN yum install vim -y
+RUN yum install /sbin/service -y
+RUN yum install httpd -y
+RUN yum install php -y
+COPY *.html /var/www/html/
 CMD /usr/sbin/httpd -DFOREGROUND && /bin/bash
-CMD setenforce 0
+COPY ./index.html /var/www/html/
+
 RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl 
 RUN chmod +x ./kubectl 
 RUN mkdir /root/.kube /root/jenkins 
